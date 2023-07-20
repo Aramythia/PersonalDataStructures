@@ -1,6 +1,6 @@
 import random
 
-def merge_sort(arr: list) -> list:
+def merge_sort(arr: list) -> None:
     """Use the Merge Sort Algorithm - Stable O(nlogn) time and O(n) space"""
     def merge(arr, s, m, e):
         # Copy the sorted left & right halfs to temp arrays
@@ -34,7 +34,7 @@ def merge_sort(arr: list) -> list:
     def sort(arr, start, end):
         # Base Case: array length is 1
         if end-start+1 <= 1:
-            return arr
+            return
 
         # Split the array in half and sort them
         midpoint = int((start + end) / 2)
@@ -44,9 +44,10 @@ def merge_sort(arr: list) -> list:
         # Merge the two arrays
         merge(arr, start, midpoint, end)
 
-        return arr
+        return
 
-    return sort(arr, 0, len(arr))
+    sort(arr, 0, len(arr))
+
 
 
 if __name__ == "__main__":
@@ -54,6 +55,6 @@ if __name__ == "__main__":
 
     print("Sorting array", arr, "-> ", end="")
 
-    arr = merge_sort(arr)
+    merge_sort(arr)
 
     print(arr)
