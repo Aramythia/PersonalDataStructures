@@ -77,6 +77,7 @@ def quick_sort(arr: list) -> None:
     sort(arr, 0, len(arr))
 
 def bucket_sort(arr: list) -> list:
+    """Use the BucketSort Algorithm - Unstable O(nlogn) time and O(n) space"""
     # Get the bounds of our bucket array
     minimum, maximum = arr[0], arr[0]
     for element in arr:
