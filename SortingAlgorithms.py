@@ -49,12 +49,40 @@ def merge_sort(arr: list) -> None:
     sort(arr, 0, len(arr))
 
 
+def quick_sort(arr: list) -> None:
+    """Use the QuickSort Algorithm - Unstable O(nlogn) time and O(1) space"""
+    def sort(arr, start, end):
+        # Base Case: array length is 1
+        if end-start+1 <= 1:
+            return arr
+        
+        pivot = arr[end-1] # Select a pivot (this can be optimized)
+        # The pivot is a value to which every other element will be compared
+        # Elements less than the pivot will be placed on the left side of
+        # the list, else they will go right. That way the list can be split
+        # into 2 relatively sorted partitions, ready for a recursive call
+        partition = start
+        for i in range(start, end):
+            if arr[i] < pivot:
+                arr[partition], arr[i] = arr[i], arr[partition]
+                partition += 1
+
+        # Put the pivot variable in the middle - it is in sorted position
+        arr[partition], arr[end-1] = arr[end-1], arr[partition]
+
+        # Sort the two partitions around the pivot
+        sort(arr, start, partition)
+        sort(arr, partition+1, end)
+
+    sort(arr, 0, len(arr))
+
 
 if __name__ == "__main__":
     arr = [random.randint(1, 100) for _ in range(10)]
 
     print("Sorting array", arr, "-> ", end="")
 
-    merge_sort(arr)
+    # merge_sort(arr)
+    quick_sort(arr)
 
     print(arr)
