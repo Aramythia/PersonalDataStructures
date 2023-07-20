@@ -76,6 +76,27 @@ def quick_sort(arr: list) -> None:
 
     sort(arr, 0, len(arr))
 
+def bucket_sort(arr: list) -> list:
+    # Get the bounds of our bucket array
+    minimum, maximum = arr[0], arr[0]
+    for element in arr:
+        if element < minimum:
+            minimum = element
+        elif element > maximum:
+            maximum = element
+
+    buckets = [0]*(maximum - minimum + 1)
+
+    # Fill the bucket
+    for element in arr:
+        buckets[element - minimum] += 1
+
+    # Return the array
+    result = []
+    for i, val in enumerate(buckets):
+        result += ([i + minimum]*val)
+    return result
+
 
 if __name__ == "__main__":
     arr = [random.randint(1, 100) for _ in range(10)]
@@ -83,6 +104,7 @@ if __name__ == "__main__":
     print("Sorting array", arr, "-> ", end="")
 
     # merge_sort(arr)
-    quick_sort(arr)
+    # quick_sort(arr)
+    arr = bucket_sort(arr)
 
     print(arr)
