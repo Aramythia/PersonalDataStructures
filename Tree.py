@@ -54,12 +54,24 @@ class BinarySearchTree:
             return
         
         help_insert(self.root, TreeNode(val))
+
+    def getMinimum(self) -> TreeNode:
+        current = self.root
+        while current and current.left:
+            current = current.left
+        return current
+    
+    def getMaximum(self) -> TreeNode:
+        current = self.root
+        while current and current.right:
+            current = current.right
+        return current
         
 
 if __name__ == "__main__":
     tree = BinarySearchTree.fromValue(10)
-    for val in [12, 15, 8, 2, 3, 14, 5]:
+    for val in [12, 15, 8, 2, 3, 14, 5, 5]:
         tree.insert(val)
 
-    target = 2
+    target = 3
     print(f"Searching for {target}: {tree.search(target)}")
