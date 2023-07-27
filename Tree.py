@@ -167,9 +167,15 @@ class BinarySearchTree:
         if self.root:
             queue.append(self.root)
 
-        while len(queue) > 0:
+        while queue:  # We must account for every node in the tree
             level = []
-            for _ in range(len(queue)):
+            # This second loop accounts for every level of the tree
+            # At the end of a traversal of a level, the queue will only contain
+            # the nodes of the next level. So we can track how many iterations
+            # to do in the next level just by taking its length.
+            # So even though the queue varies in size at every loop,
+            # there will be a cutoff when the current level ends.
+            for _ in range(len(queue)): 
                 current = queue.popleft()
                 level.append(current)
                 if current.left:
