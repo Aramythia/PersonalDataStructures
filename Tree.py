@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Union
+from typing import List, Union
 
 class TreeNode:
     def __init__(self, val: any, left: TreeNode = None, right: TreeNode = None) -> None:
@@ -12,6 +12,9 @@ class TreeNode:
         return (
             f"{self.val} -> ({self.left.val if self.left else None}, "
             f"{self.right.val if self.right else None})")
+    
+    def __repr__(self) -> str:
+        return str(self)
 
 
 class BinarySearchTree:
@@ -96,16 +99,78 @@ class BinarySearchTree:
         while current and current.right:
             current = current.right
         return current
+    
+
+    def sorted(self) -> List[TreeNode]:
+        "Do an in-order DFS traversal of the tree, returning the values in sorted order."
+        output = []
+        stack = []
+        current = self.root
+
+        while current or stack: # Iterate through the entire tree
+            while current: # Go down the left until you can't
+                stack.append(current)
+                current = current.left
+            # Once that loop breaks, we are at the bottom left
+            # current is None
+            current = stack.pop() # Bring us up back one; left traversal complete
+            output.append(current.val) # Add the "current" root
+            current = current.right # Now begin the right traversal
+        return output 
         
+        # def traverse(root):
+        #     if not root:
+        #         return
+
+        #     traverse(root.left)
+        #     collection.append(root.val)
+        #     traverse(root.right)
+        
+        # collection = []
+        # traverse(self.root)
+        # return collection
+    
+
+    def preorder(self) -> List[TreeNode]:
+        def traverse(root):
+            if not root:
+                return
+
+            collection.append(root.val)
+            traverse(root.left)
+            traverse(root.right)
+        
+        collection = []
+        traverse(self.root)
+        return collection
+    
+
+    def postorder(self) -> List[TreeNode]:
+        def traverse(root):
+            if not root:
+                return
+
+            traverse(root.left)
+            traverse(root.right)
+            collection.append(root.val)
+        
+        collection = []
+        traverse(self.root)
+        return collection
+    
 
 if __name__ == "__main__":
     tree = BinarySearchTree.fromValue(10)
     for val in [12, 11, 15, 8, 2, 3, 14, 5, 5]:
         tree.insert(val)
 
-    target = 12
-    print(f"Searching for {target}: {tree.search(target)}")
-    print(f"Removing {target}")
+    # target = 12
+    # print(f"Searching for {target}: {tree.search(target)}")
+    # print(f"Removing {target}")
 
-    target = 10
-    print(f"Searching for {target}: {tree.search(target)}")
+    # target = 10
+    # print(f"Searching for {target}: {tree.search(target)}")
+
+    print(tree.sorted())
+    print(tree.preorder())
+    print(tree.postorder())
