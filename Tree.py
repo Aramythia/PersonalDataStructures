@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import deque
 from typing import List, Union
 
 class TreeNode:
@@ -14,7 +15,7 @@ class TreeNode:
             f"{self.right.val if self.right else None})")
     
     def __repr__(self) -> str:
-        return str(self)
+        return str(self.val)
 
 
 class BinarySearchTree:
@@ -114,7 +115,7 @@ class BinarySearchTree:
             # Once that loop breaks, we are at the bottom left
             # current is None
             current = stack.pop() # Bring us up back one; left traversal complete
-            output.append(current.val) # Add the "current" root
+            output.append(current) # Add the "current" root
             current = current.right # Now begin the right traversal
         return output 
         
@@ -136,7 +137,7 @@ class BinarySearchTree:
             if not root:
                 return
 
-            collection.append(root.val)
+            collection.append(root)
             traverse(root.left)
             traverse(root.right)
         
@@ -152,10 +153,30 @@ class BinarySearchTree:
 
             traverse(root.left)
             traverse(root.right)
-            collection.append(root.val)
+            collection.append(root)
         
         collection = []
         traverse(self.root)
+        return collection
+    
+
+    def bylevel(self) -> List[TreeNode]:
+        queue = deque()
+        collection = []
+
+        if self.root:
+            queue.append(self.root)
+
+        while len(queue) > 0:
+            level = []
+            for _ in range(len(queue)):
+                current = queue.popleft()
+                level.append(current)
+                if current.left:
+                    queue.append(current.left)
+                if current.right:
+                    queue.append(current.right)
+            collection.append(level)
         return collection
     
 
@@ -174,3 +195,4 @@ if __name__ == "__main__":
     print(tree.sorted())
     print(tree.preorder())
     print(tree.postorder())
+    print(tree.bylevel())
