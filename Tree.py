@@ -186,6 +186,26 @@ class BinarySearchTree:
         return collection
     
 
+    def canReachLeaf(self, avoid: any, path: List) -> bool:
+        """General backtracking algorithm"""
+        def traverse(root, avoid, path):
+            if not root or root.val == avoid:
+                return False
+            path.append(root)
+
+            if not root.left and not root.right: # We reached a leaf node
+                return True
+            if traverse(root.left, avoid, path):
+                return True
+            if traverse(root.right, avoid, path):
+                return True
+
+            path.pop()
+            return False
+
+        return traverse(self.root, avoid, path)
+    
+
 if __name__ == "__main__":
     tree = BinarySearchTree.fromValue(10)
     for val in [12, 11, 15, 8, 2, 3, 14, 5, 5]:
@@ -202,3 +222,7 @@ if __name__ == "__main__":
     print(tree.preorder())
     print(tree.postorder())
     print(tree.bylevel())
+    path = []
+    print(tree.canReachLeaf(3, path), path)
+    path = []
+    print(tree.canReachLeaf(10, path), path)
