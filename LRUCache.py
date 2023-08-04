@@ -26,6 +26,13 @@ class Node:
         self.key, self.val = key, val
         self.prev = self.next = None
 
+    def __str__(self) -> str:
+        return f"({self.key}: {self.val})"
+    
+    def __repr__(self) -> str:
+        return self.__str__()
+    
+
 class LRUCache:
     def __init__(self, capacity: int) -> None:
         self.capacity = capacity
@@ -34,6 +41,16 @@ class LRUCache:
         # REMEMBER to always have dummy nodes to handle edge cases
         # To get the actual LRU and MRU, take the neighbors of these dummies
         self.lru, self.mru = Node(-1, -1), Node(-1, -1)
+        self.lru.next = self.mru
+        self.mru.prev = self.lru
+
+
+    def __str__(self) -> str:
+        return f"{self.cache}; LRU: {self.lru.next}"
+    
+
+    def __repr__(self) -> str:
+        return self.__str__()
 
 
     def _remove(self, node: Node):
@@ -68,9 +85,23 @@ class LRUCache:
             self._remove(self.cache[key])
 
         self.cache[key] = node
-        self.insert(node)
+        self._insert(node)
 
         # Make sure we remain at capacity
-        lru = self.lru.next  # self.lru is the dummy, its .next is the actual LRU
-        self._remove(lru)
-        del self.cache[lru.key]
+        if len(self.cache) > self.capacity:
+            lru = self.lru.next  # self.lru is the dummy, its .next is the actual LRU
+            self._remove(lru)
+            del self.cache[lru.key]
+
+
+if __name__ == "__main__":
+    x = LRUCache(2)
+
+    for operation in ((1, 1), (1,), (2, 2), (1, 3), (3, 3), (4, 4), (3,)):
+        if len(operation) == 1:
+            print(f"Getting value for {operation[0]}: ", end="")
+            print(x.get(operation[0]))
+        else:
+            print(f"Adding", operation[0], operation[1])
+            x.put(operation[0], operation[1])
+            print(x)
