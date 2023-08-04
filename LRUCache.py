@@ -36,13 +36,13 @@ class LRUCache:
         self.lru, self.mru = Node(-1, -1), Node(-1, -1)
 
 
-    def _remove(self, node):
+    def _remove(self, node: Node):
         """Helper function to remove a node from our linked list"""
         node.prev.next = node.next
         node.next.prev = node.prev
 
 
-    def _insert(self, node):
+    def _insert(self, node: Node):
         """Add node at MRU position (it was just used)"""
         node.next = self.mru
         node.prev = self.mru.prev
@@ -55,8 +55,8 @@ class LRUCache:
             node = self.cache[key]  # Random Access for our node
 
             # Take it from the queue and put it as the MRU
-            self.remove(node)
-            self.insert(node)
+            self._remove(node)
+            self._insert(node)
 
             return node.val
         else:
@@ -65,12 +65,12 @@ class LRUCache:
     def put(self, key, value):
         node = Node(key, value)
         if key in self.cache:  # Solves problem with queue -> just take it out
-            self.remove(self.cache[key])
+            self._remove(self.cache[key])
 
         self.cache[key] = node
         self.insert(node)
 
         # Make sure we remain at capacity
         lru = self.lru.next  # self.lru is the dummy, its .next is the actual LRU
-        self.remove(lru)
+        self._remove(lru)
         del self.cache[lru.key]
