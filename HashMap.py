@@ -38,12 +38,14 @@ class ChainedHashSet:
             return
         else:
             self.array[index].append(key)
+            self.size += 1
 
 
     def remove(self, key):
         index = self._hash(key)
         if key in self.array[index]:
             self.array[index].remove(key)
+            self.size -= 1
 
 
 if __name__ == "__main__":
